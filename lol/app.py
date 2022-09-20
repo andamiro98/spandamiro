@@ -1,27 +1,58 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import requests
-
 app = Flask(__name__)
+
+from pymongo import MongoClient
+import certifi
+from datetime import datetime
+
+ca = certifi.where();
+client = MongoClient('mongodb+srv://test:sparta@cluster0.q5fchzu.mongodb.net/Cluster0?retryWrites=true&w=majority',
+                     tlsCAFile=ca)
+db = client.myloldictionary
 
 
 @app.route('/')
 def main():
-    myname = "Sparta"
-    return render_template("index.html", name = myname)
+    lists = list(db.loldb.find({}, {'_id': False}))
+    return render_template("index.html", lists=lists)
 
+@app.route('/write')
+def write():
+    return render_template("write.html")
 
-@app.route('/detail')
-def detail():
-    r = requests.get('http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99')
-    #requests에서 겟 요청을 보냄
-    response = r.json()
-    #제이슨형태로 만들어줘
-    rows = response['RealtimeCityAir']['row']
-    #rows에 저걸 보내줘
-    word_recevie = request.args.get("word_give")
-    print(word_recevie)
-    return render_template("detail.html", rows=rows)
-    #앞에 rows는 변수선언 뒤에 rows는 위에 리스폰 리얼타임시티 로우를 보냄
+@app.route("/api/posts", methods=["POST"])
+def save_post():
+    title_receive = request.form['title_give']
+    name_receive = request.form['name_give']
+    position_receive = request.form['position_give']
+    star_receive = request.form['star_give']
+    desc_receive = request.form['desc_give']
+
+    file = request.files["file_give"]
+
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+    filename = f'img{mytime}'
+
+    save_to = f'static/{filename}.{extension}'
+    file.save(save_to)
+
+    doc = {
+        'image': f'{filename}.{extension}',
+        'title': title_receive,
+        'name': name_receive,
+        'position': position_receive,
+        'star': star_receive,
+        'desc': desc_receive
+    }
+
+    db.loldb.insert_one(doc)
+
+    return jsonify({'msg': '등록 완료!'})
 
 
 if __name__ == '__main__':

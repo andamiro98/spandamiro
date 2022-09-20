@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>나만의 롤 백과 사전</title>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>메인 페이지</title>
 </head>
 <body>
-    <h1>나만의 롤 백과 사전</h1>
-    <a href = "/detail">글쓰기</a>
+    <h1>메인 페이지</h1>
+    <a href="/write">글쓰기</a>
+
+    {% for list in lists %}
+        <ul id="lol-list">
+
+            <li>이미지 <img src="../static/{{ list.image }}"></li>
+            <li>제목 {{ list.title }}</li>
+            <li>챔프 {{ list.name }}</li>
+            <li>포지션 {{ list.position }}</li>
+            <li>평점 {{ list.star }}</li>
+            <li>설명 {{ list.desc }}</li>
+
+        </ul>
+    {% endfor %}
+
 </body>
 </html>
