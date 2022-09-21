@@ -43,18 +43,32 @@ def save_post():
     save_to = f'static/{filename}.{extension}'
     file.save(save_to)
 
+    infor_list = list(db.loldb.find({}, {'_id':False}))
+
+    count = len(infor_list)+1
+
     doc = {
         'image': f'{filename}.{extension}',
         'title': title_receive,
         'name': name_receive,
         'position': position_receive,
         'star': star_receive,
-        'desc': desc_receive
+        'desc': desc_receive,
+        'num': count
     }
 
     db.loldb.insert_one(doc)
 
     return jsonify({'msg': '등록 완료!'})
+
+@app.route("/lolplus", methods=["GET"])
+def save_get():
+    infor_list = list(db.loldb.find({}, {'_id': False}))
+
+    return jsonify({'infor_lists': infor_list})
+
+
+
 
 
 @app.route('/plus')

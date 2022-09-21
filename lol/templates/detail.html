@@ -133,7 +133,74 @@
 
         $(document).ready(function () {
             show_comment()
+            show_infor()
         });
+
+        // function num_post(){
+        //      $.ajax({
+        //         type: "POST",
+        //         url: "/lolplus",
+        //         data: {},
+        //         success: function (response) {
+        //             let infors = response['infor_lists']
+        //
+        //             for (let i = 0; i < infors.length; i++) {
+        //                 let num = infors[i]['num']
+        //             }
+        //         }
+        //     });
+        //
+        // }
+
+
+        function show_infor() {
+
+            $('#infor-list').empty()
+
+            $.ajax({
+                type: 'GET',
+                url: "/lolplus",
+                data: {},
+                success: function (response) {
+
+                    let infors = response['infor_lists']
+
+                    for (let i = 0; i < infors.length; i++) {
+                        let name = infors[i]['name']
+                        let position = infors[i]['position']
+                        let star = infors[i]['star']
+                        let desc = infors[i]['desc']
+                        let num = infors[i]['num']
+
+
+                        let infors_temp = `<div class="card-body">
+
+                                                <h2 style="margin-bottom: 50px">${name}</h2>
+
+                                                <div style=""><p>포지션 : ${position}</p></div>
+
+                                                <div style="margin-bottom: 15px">평점 : 3</div>
+
+                                                <div>
+                                                    <p class="card-text">설명</p>
+                                                    <div class="infor_box">
+                                                        <div>
+                                                            ${desc}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="card-text"><small class="text-muted">작성자</small></p>
+                                                </div>
+
+                                            </div>`
+
+                        $('#infor-list').append(infors_temp)
+                        break
+                    }
+                }
+            })
+        }
 
         function save_comment() {
 
@@ -177,64 +244,6 @@
             })
         }
 
-        function show_infor() {
-            $('#comment-list').empty()
-
-            $.ajax({
-                type: 'GET',
-                url: "/lolplus",
-                data: {},
-                success: function (response) {
-                    let infors = response["loldb"]
-
-                    for (let i =0; i < infors.length; i++){
-                        let name = infors[i]['name']
-                        let position = infors[i]['position']
-                        let star = infors[i]['star']
-                        let desc = infors[i]['desc']
-
-                        let temp_infor =`<div class="infor">
-                                            <div class="row g-0">
-                                                <div class="col-md-4">
-                                                    <img src="https://www.leagueoflegends.co.kr/upload/EditorImages/20160309101204_2PGJ6bhu.jpg" class="img"
-                                                         alt="...">
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="card-body">
-
-                                                        <h2 style="margin-bottom: 50px">${name}</h2>
-
-                                                        <div style=""><p>포지션 : ${position}</p></div>
-
-                                                        <div style="margin-bottom: 15px">평점 : 3</div>
-
-                                                        <div>
-                                                            <p class="card-text">설명</p>
-                                                            <div class="infor_box">
-                                                                <div>
-                                                                    ${desc}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <p class="card-text"><small class="text-muted">작성자</small></p>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        `
-
-                                                            }
-                                                        }
-                                                    })
-                                                }
-
-
-
-
 
     </script>
 </head>
@@ -260,10 +269,11 @@
             <img src="https://www.leagueoflegends.co.kr/upload/EditorImages/20160309101204_2PGJ6bhu.jpg" class="img"
                  alt="...">
         </div>
-        <div class="col-md-8">
-            <div class="card-body">
 
-                <h2 style="margin-bottom: 50px">${name}</h2>
+        <div class="col-md-8" id="infor-list">
+            <div class="card-body" >
+
+                <h2 style="margin-bottom: 50px">챔피언</h2>
 
                 <div style=""><p>포지션 : 미드</p></div>
 
@@ -273,7 +283,7 @@
                     <p class="card-text">설명</p>
                     <div class="infor_box">
                         <div>
-                            ----------------설명-----------------
+                            설명란
                         </div>
                     </div>
                 </div>
@@ -281,9 +291,9 @@
                     <p class="card-text"><small class="text-muted">작성자</small></p>
                 </div>
 
-
             </div>
         </div>
+
     </div>
 </div>
 
