@@ -55,5 +55,35 @@ def save_post():
     return jsonify({'msg': '등록 완료!'})
 
 
+@app.route('/plus')
+def plus():
+    return render_template('detail.html')
+
+
+@app.route('/api/posts')
+def home():
+    return render_template('write.html')
+
+
+@app.route("/lolplus", methods=["POST"])
+def chat_post():
+    chat_receive = request.form['comment_give']
+
+    doc = {
+        'chat': chat_receive
+    }
+
+    db.lolplus.insert_one(doc)
+
+    return jsonify({'msg': 'post(기록) 연결'})
+
+
+@app.route("/lolplus", methods=["GET"])
+def chat_get():
+    lolplus_list = list(db.lolplus.find({}, {'_id': False}))
+
+    return jsonify({'chat_db': lolplus_list})
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
