@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 app = Flask(__name__)
-
-from pymongo import MongoClient
-import certifi
 from datetime import datetime
+from pymongo import MongoClient
+# import certifi
 
-ca = certifi.where();
-client = MongoClient('mongodb+srv://test:sparta@cluster0.q5fchzu.mongodb.net/Cluster0?retryWrites=true&w=majority',
-                     tlsCAFile=ca)
-db = client.myloldictionary
+
+# ca = certifi.where();
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.q5fchzu.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
+# client = MongoClient('localhost', 27017)
+# client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('mongodb://13.125.160.207', 27017, username="test", password="test")
+db = client.LOLEncyclopedia
 
 
 @app.route('/')
