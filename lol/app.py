@@ -43,7 +43,7 @@ def save_post():
     save_to = f'static/{filename}.{extension}'
     file.save(save_to)
 
-    infor_list = list(db.loldb.find({}, {'_id':False}))
+    infor_list =list(db.loldb.find({}, {'_id':False}))
 
     count = len(infor_list)+1
 
@@ -60,15 +60,6 @@ def save_post():
     db.loldb.insert_one(doc)
 
     return jsonify({'msg': '등록 완료!'})
-
-@app.route("/lolplus", methods=["GET"])
-def save_get():
-    infor_list = list(db.loldb.find({}, {'_id': False}))
-
-    return jsonify({'infor_lists': infor_list})
-
-
-
 
 
 @app.route('/plus')
@@ -99,6 +90,11 @@ def chat_get():
     lolplus_list = list(db.lolplus.find({}, {'_id': False}))
 
     return jsonify({'chat_db': lolplus_list})
+
+@app.route('/show<int:num>', methods=["GET"])
+def show(num):
+    row = db.loldb.find_one({'num': num})
+    return render_template('detail.html', row=row)
 
 
 if __name__ == '__main__':

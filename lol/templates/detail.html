@@ -131,31 +131,15 @@
     </style>
     <script>
 
+
+
         $(document).ready(function () {
             show_comment()
             show_infor()
         });
 
-        // function num_post(){
-        //      $.ajax({
-        //         type: "POST",
-        //         url: "/lolplus",
-        //         data: {},
-        //         success: function (response) {
-        //             let infors = response['infor_lists']
-        //
-        //             for (let i = 0; i < infors.length; i++) {
-        //                 let num = infors[i]['num']
-        //             }
-        //         }
-        //     });
-        //
-        // }
-
 
         function show_infor() {
-
-            $('#infor-list').empty()
 
             $.ajax({
                 type: 'GET',
@@ -163,41 +147,6 @@
                 data: {},
                 success: function (response) {
 
-                    let infors = response['infor_lists']
-
-                    for (let i = 0; i < infors.length; i++) {
-                        let name = infors[i]['name']
-                        let position = infors[i]['position']
-                        let star = infors[i]['star']
-                        let desc = infors[i]['desc']
-                        let num = infors[i]['num']
-
-
-                        let infors_temp = `<div class="card-body">
-
-                                                <h2 style="margin-bottom: 50px">${name}</h2>
-
-                                                <div style=""><p>포지션 : ${position}</p></div>
-
-                                                <div style="margin-bottom: 15px">평점 : 3</div>
-
-                                                <div>
-                                                    <p class="card-text">설명</p>
-                                                    <div class="infor_box">
-                                                        <div>
-                                                            ${desc}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <p class="card-text"><small class="text-muted">작성자</small></p>
-                                                </div>
-
-                                            </div>`
-
-                        $('#infor-list').append(infors_temp)
-                        break
-                    }
                 }
             })
         }
@@ -245,6 +194,9 @@
         }
 
 
+
+
+
     </script>
 </head>
 <body>
@@ -270,12 +222,17 @@
                  alt="...">
         </div>
 
+
         <div class="col-md-8" id="infor-list">
             <div class="card-body" >
 
-                <h2 style="margin-bottom: 50px">챔피언</h2>
+                {% for row in rows  %}
+                    {% set name = row["name"] %}
 
-                <div style=""><p>포지션 : 미드</p></div>
+
+                <h2 style="margin-bottom: 50px"> {{ name }}</h2>
+
+                <div style=""><p>포지션 : {{ row.position }}</p></div>
 
                 <div style="margin-bottom: 15px">평점 : 3</div>
 
@@ -283,7 +240,7 @@
                     <p class="card-text">설명</p>
                     <div class="infor_box">
                         <div>
-                            설명란
+                            {{ row.desc }}
                         </div>
                     </div>
                 </div>
@@ -291,6 +248,7 @@
                     <p class="card-text"><small class="text-muted">작성자</small></p>
                 </div>
 
+                {% endfor %}
             </div>
         </div>
 
